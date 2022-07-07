@@ -1,5 +1,6 @@
  #include <SoftwareSerial.h>
  #include <Arduino.h> // For PlatformIO to work
+ #include "Leds.h"
 /*
   Twenty-four clock tick bytes are sent per quarter note when the host sequencer is running.
   Every time the sequencer is stopped, the stop byte is sent. Every time the sequencer is 
@@ -20,6 +21,10 @@
 #define BRIGHTNESS_MIN 8
 #define BRIGHTNESS_MED 64
 #define BRIGHTNESS_MAX 255
+
+int ledsPin[4] = {LED1_PIN, LED2_PIN, LED3_PIN, LED4_PIN};
+
+Leds *leds;
 
 char led1_state = 255;
 char led2_state = 255;
@@ -129,12 +134,14 @@ void Frame () {
 
 void setup() {
 
+  leds = new Leds{ledsPin};
+
   pinMode( rxPin, INPUT );
   pinMode( txPin, OUTPUT);
-  pinMode(LED1_PIN, OUTPUT);
-  pinMode(LED2_PIN, OUTPUT);
-  pinMode(LED3_PIN, OUTPUT);
-  pinMode(LED4_PIN, OUTPUT);
+  // pinMode(LED1_PIN, OUTPUT);
+  // pinMode(LED2_PIN, OUTPUT);
+  // pinMode(LED3_PIN, OUTPUT);
+  // pinMode(LED4_PIN, OUTPUT);
   mySerial.begin( 31250 );
   Serial.begin(9600);
   analogWrite(LED1_PIN,LOW);
